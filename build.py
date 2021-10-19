@@ -1,10 +1,10 @@
-import subprocess
-import os
 import glob
-import shutil  
+import os
+import shutil
+import subprocess
+import sys
 from distutils.dir_util import copy_tree
 from pathlib import Path
-import sys
 
 idf_homekit_directory = "lib/esp-homekit-sdk/"
 arduino_homekit_directory = "lib/homekit"
@@ -18,7 +18,7 @@ if len(glob.glob("lib/*.c")) == 0:
     # Check if a .git folder exists, if so assume the project's been cloned.
     git_folder = Path(idf_homekit_directory + ".git")
     if not git_folder.exists() and not Path(arduino_homekit_directory).exists(): # Add and lib/homekit so i can delete it
-        commit = "040b0f301223ebc6995597328e5a5cc9f9739a02"
+        commit = "c62f64dea6669547182e932dfded0a3a912a1951"
         process = subprocess.call(["git", "clone", "--recursive", "https://github.com/espressif/esp-homekit-sdk.git", idf_homekit_directory], stdout=open(os.devnull, 'wb'))
         process = subprocess.call(["git", "--git-dir", str(git_folder), "checkout", commit], stdout=open(os.devnull, 'wb'))
         shutil.copytree(idf_homekit_directory + "components/homekit", arduino_homekit_directory)
@@ -29,7 +29,7 @@ if len(glob.glob("lib/*.c")) == 0:
         if "example" in dirpath or "test" in dirpath or "tests" in dirpath:
             continue
         for file in filenames:
-            if file.endswith(".c") or file.endswith(".h") and file[:-2] not in mfi_source:
+            if file.endswith(".c") or file.endswith(".h"):# and file[:-2] not in mfi_source:
                 shutil.move(dirpath + "/" + file, "lib/")
 
     #
