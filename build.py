@@ -21,7 +21,8 @@ if len(glob.glob("lib/*.c")) == 0:
         commit = "c62f64dea6669547182e932dfded0a3a912a1951"
         process = subprocess.call(["git", "clone", "--recursive", "https://github.com/espressif/esp-homekit-sdk.git", idf_homekit_directory], stdout=open(os.devnull, 'wb'))
         process = subprocess.call(["git", "--git-dir", str(git_folder), "checkout", commit], stdout=open(os.devnull, 'wb'))
-        shutil.copytree(idf_homekit_directory + "components/homekit", arduino_homekit_directory)
+        shutil.copytree(idf_homekit_directory + "components", arduino_homekit_directory)
+        shutil.copytree(idf_homekit_directory + "examples/common", arduino_homekit_directory + "/common")
         shutil.rmtree(idf_homekit_directory)
 
     for (dirpath, dirnames, filenames) in os.walk(Path(arduino_homekit_directory)):
